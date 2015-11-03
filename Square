@@ -1,0 +1,21 @@
+
+package com.generated;
+
+import java.util.List;
+
+public class Square extends  Shape
+{
+
+    protected float side;
+    public float getSide() {
+        return side;
+    }
+    @Override
+    public void setSide(List<Float> sides) {
+        this.side = sides.get(0);
+    }
+    @Override
+    public float ColculateOfSquare() {
+        return (this.side*this.side);
+    }
+}
