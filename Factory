@@ -1,0 +1,31 @@
+
+package com.generated;
+
+public class ObjectFactory
+{
+    public Shapes createShapes()
+    {
+        Shapes shapes =  new Shapes();
+        shapes.setContent(new Circle());
+        shapes.setContent(new Triangle());
+        shapes.setContent(new Square());
+        shapes.setContent(new Rectangle());
+        return shapes;
+    }
+
+    public Circle createCircle() {
+        return new Circle();
+    }
+
+    public Triangle createTriangle() {
+        return new Triangle();
+    }
+
+    public Square createSquare() {
+        return new Square();
+    }
+
+    public Rectangle createRectangle() {
+        return new Rectangle();
+    }
+}
