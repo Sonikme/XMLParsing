@@ -1,0 +1,62 @@
+import com.generated.ObjectFactory;
+import com.generated.Shape;
+import com.generated.Shapes;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.util.*;
+
+
+public class Main {
+
+    public static void Printing(Shape shape, int counterOfShape)
+    {
+        System.out.println("<" + counterOfShape + ">" + ":" + "<" + shape.getColor() + ">" + "-" + "<" + shape.ColculateOfSquare() + ">");
+    }
+    public static void DeterminationAndPrintingOfColorsAndSquares(algorithmOfParsing parsing, Shapes shapes)
+    {
+        int counterOfShape = 0;
+        Shape shape;
+        List<Float> sides = new ArrayList<Float>();
+        parsing.TreeOfTagsAndValues = parsing.rootOfTree.getChildAt(0);
+        for (int i = 0; i < parsing.TreeOfTagsAndValues.getNumberOfChildren(); i++)
+        {
+            for (Map.Entry<String, String> pair : parsing.TreeOfTagsAndValues.getChildAt(i).getData().entrySet())
+            {
+                counterOfShape++;
+                shape = shapes.getContent().get(pair.getKey());
+                shape.setColor(parsing.TreeOfTagsAndValues.getChildAt(i).getChildAt(0).getData().get("color"));
+                for (int k = 1; k < parsing.TreeOfTagsAndValues.getChildAt(i).getNumberOfChildren(); k++)
+                {
+                    for (Map.Entry<String, String> pair2 : parsing.TreeOfTagsAndValues.getChildAt(i).getChildAt(k).getData().entrySet())
+                    {
+                        sides.add(Float.parseFloat(pair2.getValue()));
+                    }
+
+                }
+                shape.setSide(sides);
+                sides.clear();
+                Printing(shape, counterOfShape);
+            }
+
+        }
+        for(Map.Entry<Integer, Integer> pair : parsing.DepthOfTreeAndCountOfChildPerTree.entrySet())
+        {
+
+        }
+    }
+    public static void main(String[] args)
+    {
+        ObjectFactory factory = new ObjectFactory();
+        Shapes shapes = factory.createShapes();
+        FileInputStream reader;
+        try
+        {
+            reader = (new FileInputStream(args[0]));
+            algorithmOfParsing parsing = new algorithmOfParsing(reader);
+            parsing.parsingOfXml();
+            DeterminationAndPrintingOfColorsAndSquares(parsing, shapes);
+        }catch(FileNotFoundException b){System.out.print("File not found");}
+
+
+    }
+}
