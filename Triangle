@@ -1,0 +1,37 @@
+
+package com.generated;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Triangle
+    extends Shape
+{
+    protected List<Float> side;
+    public List<Float> getSide() {
+        if (side == null) {
+            side = new ArrayList<Float>();
+        }
+        return this.side;
+    }
+    @Override
+    public void setSide(List<Float> sides)
+    {
+        this.side = new ArrayList<Float>(sides.subList(0,3));
+    }
+    @Override
+    public float ColculateOfSquare() {
+        float p = 0;
+        float mid = 1;
+        for(float s : this.side)
+        {
+            p += s;
+        }
+        p = p / 2;
+        for (float s : this.side)
+        {
+            mid = mid * (p - s);
+        }
+        return (float)Math.sqrt(p * mid);
+    }
+}
