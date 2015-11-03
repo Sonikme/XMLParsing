@@ -1,0 +1,30 @@
+
+package com.generated;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Shapes
+{
+    protected Map<String, Shape> content = new HashMap<String, Shape>();
+    public Map<String, Shape> getContent()
+    {
+        return this.content;
+    }
+    public void setContent(Circle d)
+    {
+        this.content.put("circle", d);
+    }
+    public void setContent(Triangle d)
+    {
+        this.content.put("triangle", d);
+    }
+    public void setContent(Square d)
+    {
+        this.content.put("square", d);
+    }
+    public void setContent(Rectangle d)
+    {
+        this.content.put("rectangle", d);
+    }
+}
