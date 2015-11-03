@@ -1,0 +1,25 @@
+
+
+package com.generated;
+
+import java.util.List;
+
+public class Circle
+    extends Shape
+{
+
+    protected float diameter;
+
+    public float getDiameter() {
+        return diameter;
+    }
+    @Override
+    public void setSide(List<Float> dia) //Диаметр окружности
+    {
+        this.diameter = dia.get(0);
+    }
+    @Override
+    public float ColculateOfSquare() {
+        return (float)(3.15*(this.diameter*this.diameter)/8);
+    }
+}
