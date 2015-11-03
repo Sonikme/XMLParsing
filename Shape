@@ -1,0 +1,20 @@
+
+
+package com.generated;
+
+import java.util.List;
+
+public abstract class Shape
+{
+    protected String color;
+    public String getColor()
+    {
+        return color;
+    }
+    public abstract void setSide(List<Float> sides);
+    public void setColor(String value)
+    {
+        this.color = value;
+    }
+    public abstract float ColculateOfSquare();
+}
