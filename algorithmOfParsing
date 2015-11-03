@@ -1,0 +1,108 @@
+package com.company;
+
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
+
+/**
+ * Created by Egor on 21/10/2015.
+ */
+public class algorithmOfParsing
+{
+    protected FileInputStream xmlFile;
+    public GenericTreeNode<HashMap<String, String>> TreeOfTagsAndValues = new GenericTreeNode<HashMap<String, String>>(new HashMap<String, String>());
+    public GenericTreeNode<HashMap<String, String>> rootOfTree = TreeOfTagsAndValues;
+    algorithmOfParsing(FileInputStream xmlFile)
+    {
+        this.xmlFile = xmlFile;
+        DepthOfTreeAndCountOfChildPerTree.put(0, 0);
+        DepthOfTreeAndCountOfChildPerTree.put(1, 0);
+        DepthOfTreeAndCountOfChildPerTree.put(2, 0);
+        DepthOfTreeAndCountOfChildPerTree.put(3, 0);
+    }
+    List<Character> charsets = new ArrayList<Character>();
+    String tagString;
+    String valueOfTag;
+    public Map<Integer, Integer> DepthOfTreeAndCountOfChildPerTree = new TreeMap<Integer, Integer>();
+    char c ;
+    int DepthOfTree = 0;
+    Integer switcher = 0;
+    public void parsingOfXml()
+    {
+        if (DepthOfTree == 1){DepthOfTreeAndCountOfChildPerTree.put(2, 0);}
+        try {
+            c = (char)xmlFile.read();
+            Labe1: while (xmlFile.available() > 0)
+            {
+                if (c == '<')
+                {
+                    tagString = null;
+                    c = (char) xmlFile.read();
+                    if (c == '/')
+                    {
+                        DepthOfTree--;
+                        switcher++;
+                        TreeOfTagsAndValues = rootOfTree;
+                        if (DepthOfTree != 0) {
+                            for (Map.Entry<Integer, Integer> pair : DepthOfTreeAndCountOfChildPerTree.entrySet()) {
+                                TreeOfTagsAndValues = TreeOfTagsAndValues.getChildAt(pair.getValue());
+                                if (pair.getKey().equals(DepthOfTree - 1)) {
+                                    break;
+                                }
+                            }
+                        }
+                        while (c != '>')
+                        {
+                            c = (char) xmlFile.read();
+                        }
+                        parsingOfXml();
+                    }
+                    if (xmlFile.available() > 0)
+                    {
+                    while (c != '>')
+                    {
+                     tagString += String.valueOf(c);
+                        c = (char) xmlFile.read();
+                    }
+                    tagString = tagString.substring(4);
+                    if (!tagString.isEmpty())
+                    {
+                        if (switcher != 0)
+                        {
+                            DepthOfTreeAndCountOfChildPerTree.put(DepthOfTree, (DepthOfTreeAndCountOfChildPerTree.get(DepthOfTree)+1) );
+                            switcher = 0;
+                        }
+                            TreeOfTagsAndValues.addChild(new GenericTreeNode<HashMap<String, String>>(new HashMap<String, String>()));
+                            TreeOfTagsAndValues.getChildAt(DepthOfTreeAndCountOfChildPerTree.get(DepthOfTree)).getData().put(tagString, null);
+                            TreeOfTagsAndValues = TreeOfTagsAndValues.getChildAt(DepthOfTreeAndCountOfChildPerTree.get(DepthOfTree));
+                            DepthOfTree++;
+                        parsingOfXml();
+                    }
+                    }
+                }
+                else if((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r'))
+                {
+                    while ((c == ' ') || (c == '\t') || (c == '\n') || (c == '\r'))
+                    {
+                        c = (char) xmlFile.read();
+                    }
+                    continue Labe1;
+                }
+                else
+                {
+                    valueOfTag = null;
+                    do
+                    {
+                        valueOfTag += c;
+                        c = (char) xmlFile.read();
+                    }while (c != '<');
+                    valueOfTag = valueOfTag.substring(4);
+                    TreeOfTagsAndValues.getData().put(tagString, valueOfTag);
+                    continue Labe1;
+                }
+            }
+        }catch (IOException ex){System.out.println(ex);}
+        rootOfTree = TreeOfTagsAndValues;
+    }
+}
